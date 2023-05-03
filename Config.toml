@@ -1,0 +1,10 @@
+log_level = "trace"
+
+[tcp_config]
+addr = "127.0.0.1:3000"
+
+[file_handler_config]
+storage_directory = "/home/cunt/dev/_ongoing/hcs/hcs-client/_storage_dir"
+symlink_directory = "/home/cunt/dev/_ongoing/hcs/hcs-client/_symlink_dir"
+temporary_directory = "/home/cunt/dev/_ongoing/hcs/hcs-client/_tmp_dir"
+program_data_directory = "/home/cunt/dev/_ongoing/hcs/hcs-client/_program_data_dir"
