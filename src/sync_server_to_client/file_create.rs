@@ -19,7 +19,13 @@ pub fn handle_file_create(
 
     {
         // Read file from server and write to location
+        // let mut file = fs::OpenOptions::new()
+        //     .write(true)
+        //     .truncate(true)
+        //     .open(&file_paths.storage_dir_path())?;
+
         let mut file = fs::File::create(&file_paths.storage_dir_path())?;
+        file.set_len(0)?;
         let packets = protocol::calculate_num_packets(file_create.size());
         for _ in 0..packets {
             let bytes = tcp_connection.read_next_chunk()?;
@@ -49,6 +55,10 @@ pub fn handle_file_create(
     }
 
     {
+        if fs::read_link(&file_paths.symlink_dir_path()).is_ok() {
+            // remove symlink
+            symlink::remove_symlink_file(&file_paths.symlink_dir_path())?;
+        }
         // create symlink to file
         symlink::symlink_file(
             &file_paths.storage_dir_path(),

@@ -20,6 +20,7 @@ pub fn handle_file_modify(
     {
         // Read file from server and write to location
         let mut file = fs::File::create(&file_paths.storage_dir_path())?;
+        file.set_len(0)?;
         let packets = protocol::calculate_num_packets(file_modify.size());
         for _ in 0..packets {
             let bytes = tcp_connection.read_next_chunk()?;

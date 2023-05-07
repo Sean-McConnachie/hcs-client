@@ -18,6 +18,17 @@ pub fn sync_client_to_server(
         &config.file_handler_config(),
         server_version,
     )?;
+
+    let old_changes = fs::read_dir(
+        &config
+            .file_handler_config()
+            .program_data_directory
+            .join("changes"),
+    )?;
+    for old_change in old_changes {
+        let old_change = old_change?;
+        fs::remove_file(old_change.path())?;
+    }
     Ok(())
 }
 

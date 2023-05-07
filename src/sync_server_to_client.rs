@@ -142,7 +142,11 @@ fn start_transmission(
                 }
                 data::Transmission::TransactionComplete => {
                     log::info!("Server sent transaction complete event.");
-                    break;
+                    return Ok(());
+                }
+                data::Transmission::ServerVersion(sv) => {
+                    log::info!("Server sent server version event.");
+                    server_version.set(sv.server_version());
                 }
                 _ => {
                     log::error!("Server did not respond with change event");
@@ -164,6 +168,10 @@ fn start_transmission(
                     );
                     server_version.set(server_version_response.server_version());
                 }
+                data::Transmission::TransactionComplete => {
+                    log::info!("Server sent transaction complete event.");
+                    return Ok(());
+                }
 
                 _ => {
                     dbg!(transmission);
@@ -173,6 +181,4 @@ fn start_transmission(
             }
         }
     }
-
-    Ok(())
 }
